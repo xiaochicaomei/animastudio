@@ -27,5 +27,12 @@ if not exist "%PY%" (
 
 cd /d "%ROOT%\ComfyUI_windows_portable"
 echo [AnimaStudio] starting ComfyUI on http://127.0.0.1:8188
-"%PY%" -s ComfyUI\main.py --windows-standalone-build --listen 127.0.0.1 --port 8188 --preview-method none %*
+
+REM --- Memory flags. They are NOT optional here: an Anima-2.9B render peaks around
+REM     7.0 GiB of a 7.96 GiB card on its own, and the hires refine pass on top of it
+REM     cannot fit without them. Measured, the same graph OOMs bare and runs with about
+REM     1 GiB to spare with them. Note that --lowvram is a documented no-op under
+REM     dynamic VRAM, which is why these three are the ones that matter.
+REM     Keep in sync with tools\start_comfyui_headless.ps1.
+"%PY%" -s ComfyUI\main.py --windows-standalone-build --listen 127.0.0.1 --port 8188 --preview-method none --enable-dynamic-vram --async-offload --vram-headroom 0.5 %*
 endlocal

@@ -7,6 +7,7 @@ services. A local 9B model does the writing, planning, review and judging; Comfy
 renders the art; the code types the dialogue into the bubbles.
 
 > 中文完整文档见 [`README.txt`](README.txt)（27 KB，含安装、模型下载与全部设计取舍）。
+> **上手看 [`USAGE.md`](USAGE.md)** —— 日常怎么用、每个参数什么效果、踩过的坑都在那里。
 
 ---
 
