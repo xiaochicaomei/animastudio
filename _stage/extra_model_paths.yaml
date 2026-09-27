@@ -1,0 +1,11 @@
+# AnimaStudio - external model paths
+# Keeps every weight OUTSIDE the ComfyUI folder so the app can be replaced or
+# deleted independently, and so the whole studio folder stays relocatable.
+animastudio:
+    base_path: D:/AnimaStudio/models
+    diffusion_models: diffusion_models
+    text_encoders: text_encoders
+    clip: text_encoders
+    vae: vae
+    loras: loras
+    upscale_models: upscale_models

@@ -1,0 +1,52 @@
+﻿=== pipeline ===
+agent.py	32793
+check_weights.py	1063
+comfy.py	4208
+compose.py	6514
+make_style_dataset.py	4942
+orchestrate.py	12206
+qc.py	7847
+runner.py	8477
+style_train.py	19473
+test_agent.py	3063
+test_first_light.py	2710
+verify_style.py	4123
+wd_tagger.py	5138
+=== _stage ===
+extra_model_paths.yaml	400
+=== tools ===
+fetch.ps1	3813
+fetch_agent9b.ps1	1767
+fetch_mmproj.ps1	2107
+fetch_ms.ps1	3148
+fix_trainer_torch.ps1	1035
+install.ps1	4724
+install_torch_cu130.ps1	1648
+setup_trainer.ps1	1790
+start_agent_headless.ps1	1878
+start_comfyui_headless.ps1	997
+=== workspace\jobs ===
+audit.jsonl	10106
+jobs.jsonl	24362
+orig_student_sheet.txt	148
+qc.json	65429
+qc_before_metric.json	42691
+state.json	10608
+story.txt	402
+story_9b.txt	173
+story_page.txt	129
+story_page3.txt	287
+styles.json	360
+=== trainer\configs ===
+orig_student.toml	296
+=== tools\*.ps1 ===
+fetch.ps1
+fetch_agent9b.ps1
+fetch_mmproj.ps1
+fetch_ms.ps1
+fix_trainer_torch.ps1
+install.ps1
+install_torch_cu130.ps1
+setup_trainer.ps1
+start_agent_headless.ps1
+start_comfyui_headless.ps1

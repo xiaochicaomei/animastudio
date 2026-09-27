@@ -1,0 +1,80 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "_meta": { "title": "Anima Dit" },
+    "inputs": {
+      "unet_name": "anima-base-v1.0.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "_meta": { "title": "Qwen3-0.6B TE (type auto-detected)" },
+    "inputs": {
+      "clip_name": "qwen_3_06b_base.safetensors",
+      "type": "stable_diffusion",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "_meta": { "title": "Qwen Image VAE" },
+    "inputs": { "vae_name": "qwen_image_vae.safetensors" }
+  },
+  "10": {
+    "class_type": "LoraLoaderModelOnly",
+    "_meta": { "title": "Turbo LoRA (off by default: KSampler.model points to node 1)" },
+    "inputs": {
+      "model": ["1", 0],
+      "lora_name": "anima-turbo-lora-v0.2.safetensors",
+      "strength_model": 1.0
+    }
+  },
+  "20": {
+    "class_type": "CLIPTextEncode",
+    "_meta": { "title": "POS" },
+    "inputs": {
+      "clip": ["2", 0],
+      "text": "masterpiece, best quality, score_7, safe, 1girl, solo, long hair, school uniform, classroom, sitting, window, sunlight, looking at viewer, gentle smile"
+    }
+  },
+  "21": {
+    "class_type": "CLIPTextEncode",
+    "_meta": { "title": "NEG" },
+    "inputs": {
+      "clip": ["2", 0],
+      "text": "worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration"
+    }
+  },
+  "30": {
+    "class_type": "EmptyLatentImage",
+    "_meta": { "title": "SIZE" },
+    "inputs": { "width": 1024, "height": 1024, "batch_size": 1 }
+  },
+  "40": {
+    "class_type": "KSampler",
+    "_meta": { "title": "SAMPLER" },
+    "inputs": {
+      "model": ["1", 0],
+      "positive": ["20", 0],
+      "negative": ["21", 0],
+      "latent_image": ["30", 0],
+      "seed": 755918130909406,
+      "steps": 40,
+      "cfg": 4.0,
+      "sampler_name": "er_sde",
+      "scheduler": "sgm_uniform",
+      "denoise": 1.0
+    }
+  },
+  "50": {
+    "class_type": "VAEDecode",
+    "_meta": { "title": "DECODE" },
+    "inputs": { "samples": ["40", 0], "vae": ["3", 0] }
+  },
+  "60": {
+    "class_type": "SaveImage",
+    "_meta": { "title": "SAVE" },
+    "inputs": { "images": ["50", 0], "filename_prefix": "anima_test" }
+  }
+}
