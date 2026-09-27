@@ -60,7 +60,7 @@
 
   提示词杠杆（来自社区提示词工具包，已抽成预设库，需要时才开）：
     预设库由 pipeline\build_presets.py 从 AnimaPromptKit 的数据文件 + 你的服饰标签文件
-    生成：466 条预设 / 400 位画师 / 433 条画师配方 / 8 个负向包 / 14 组成人标签。
+    生成：466 条预设 / 400 位画师 / 433 条画师配方 / 8 个负向包 / 14 组受限标签。
     浏览：python pipeline\presets.py --list [--nsfw]
           python pipeline\presets.py --artists 40     最认的画师（按训练语料帖数）
           python pipeline\presets.py --negatives      负向包
@@ -70,7 +70,7 @@
                      表里的 posts 是该画师在 Anima 训练语料里的图量——越高模型越认。
                      例：--artist "qp:flapper"
     --preset 名称    钉一整块现成标签 + 它自带的英文自然语言描述（模型卡要求自然语言写细）。
-                     例：--preset 雨中回眸（成人向的先 --list --nsfw 查名字）
+                     例：--preset 雨中回眸（受限池的先 --list --nsfw 查名字）
     --negative-pack  用 kit 里已验证的负向包替换内置默认；反伪影块仍会追加，留白页也
                      依然禁气泡（与默认规则一致）。例：--negative-pack 文字水印
 
@@ -313,9 +313,9 @@
                 --auto-preset N        让模型从"按故事检索出的短名单"里挑 ≤N 条预设。
                                        名字必须逐字命中库里的条目，所以坏挑选只会退化成
                                        "不加预设"，不会把无关内容写进提示词
-                --auto-preset-adult    同时开放成人预设池。默认只从非成人池里选——
+                --auto-preset-adult    同时开放受限预设池。默认只从通用池里选——
                                        基调是使用者的决定，不是模型的猜测（实测过：让模型
-                                       自己判断基调会把温情校园故事误判成成人）
+                                       自己判断基调会把温情校园故事误判成受限内容）
                 --auto-artist N        让模型从"画师 + 风格关键词"菜单里挑 ≤N 位画师。
                                        前置：先跑 python pipeline\build_artist_styles.py
                                        --limit 100 建立风格索引（约 10 秒/位，可续跑）

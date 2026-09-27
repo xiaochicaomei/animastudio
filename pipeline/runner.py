@@ -98,7 +98,7 @@ NEG_ARTIFACT = (
     "artist name, blurry, jpeg artifacts, chromatic aberration, "
     "watermark, signature, logo, text, english text, japanese text, twitter username, "
     "web address, copyright name, dated, "
-    # Censorship. An anime model asked for an intimate scene will sometimes draw the
+    # Censorship overlays. An anime model asked for a close scene will sometimes draw the
     # mosaic bar or the black strip unprompted - the style LoRA here was trained on
     # material whose own tag list contains `censored` and `mosaic_censoring`, so it has
     # learned the look. Banning it by name is the only lever the negative prompt has.

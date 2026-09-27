@@ -60,6 +60,15 @@ _stage/promptkit/
 _stage/anima_incontext/
 
 # ─────────────────────────────────────────────────────────────────────────────
+#  Generated preset library. build_presets.py scrapes booru tag data and writes this
+#  file; it carries a `generated` timestamp and a `sources` block, so it is a build
+#  artifact rather than source. Regenerate it locally with build_presets.py. Shipping
+#  it would also mean redistributing a scraped tag/artist corpus, which is not ours.
+#  artist_styles.json is hand-curated and stays tracked.
+# ─────────────────────────────────────────────────────────────────────────────
+pipeline/presets/presets.json
+
+# ─────────────────────────────────────────────────────────────────────────────
 #  Python / editor noise
 # ─────────────────────────────────────────────────────────────────────────────
 __pycache__/
@@ -72,3 +81,12 @@ venv/
 Thumbs.db
 desktop.ini
 *.log
+pipeline/presets/restricted_tags.txt
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  Internal research note. MODEL_SELECTION_2026.md is a model survey written around a
+#  specific content brief, and rewriting it neutrally would destroy its value as a
+#  record of what was actually evaluated. It stays local; the technical conclusions are
+#  already reflected in README.md and the code comments.
+# ─────────────────────────────────────────────────────────────────────────────
+_stage/MODEL_SELECTION_2026.md

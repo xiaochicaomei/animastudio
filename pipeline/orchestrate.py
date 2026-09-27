@@ -369,17 +369,17 @@ def main():
                     help="let the model pick up to N presets for this story from a "
                          "shortlist retrieved off the story text (0 = off). Picks are "
                          "validated against the library, so a bad pick degrades to no "
-                         "preset. Only non-adult presets are eligible unless "
+                         "preset. Only general-audience presets are eligible unless "
                          "--auto-preset-adult is given")
     ap.add_argument("--auto-preset-adult", action="store_true",
-                    help="also let --auto-preset draw from the adult presets. Opt-in on "
+                    help="also let --auto-preset draw from the mature presets. Opt-in on "
                          "purpose: the tone of a run is the operator's call, not a guess")
     ap.add_argument("--adult", action="store_true",
-                    help="the premise is adult material: the story beats must carry the "
-                         "physical escalation (not only mood) and the planner must render "
-                         "them as such. Off by default, and that default matters: with it "
-                         "off, an explicit premise came back as 40 beats of atmosphere "
-                         "because nothing ever asked for more")
+                    help="treat the premise as mature material: the story beats must carry "
+                         "the escalation (not only mood) and the planner must render them "
+                         "as such. Off by default, and that default matters: with it off, "
+                         "a charged premise came back as 40 beats of atmosphere because "
+                         "nothing ever asked for more")
     ap.add_argument("--auto-artist", type=int, default=0, metavar="N",
                     help="let the model pick up to N @artists for this story from a menu "
                          "of name + style keywords (0 = off). Needs the style index built "

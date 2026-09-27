@@ -78,8 +78,8 @@ SYSTEM_PAGE = (
     "- dialogue: the beats describe only what a camera sees and never quote speech, so YOU\n"
     "  supply the line. Write it in SIMPLIFIED CHINESE (简体中文) - never Japanese and never\n"
     "  Traditional Chinese. Stating the language positively is not enough: the premise is\n"
-    "  Japanese-flavoured and the model drifts to kana when left alone (measured on the\n"
-    "  秀子 run: 4 of the first 5 lines came back as もう、何時だ / 誰だろう / はい、開けました,\n"
+    "  Japanese-flavoured and the model drifts to kana when left alone (measured on one\n"
+    "  run: 4 of the first 5 lines came back as もう、何時だ / 誰だろう / はい、開けました,\n"
     "  only 1 in Chinese). The names and the setting may read Japanese; the dialogue must not.\n"
     "  One short line (at most 22 characters) on every page where two characters interact -\n"
     "  meeting, talking, arguing, reacting to each other, or in bed together. Invent a line\n"
@@ -550,22 +550,23 @@ STORY_SYSTEM = (
 
 
 # The tone of a run is the operator's call, not the model's guess - the same principle
-# that makes --auto-preset-adult opt-in. Without this, an adult premise reads to the 9B as
-# permission to write about feelings: measured on a 40-beat NTR premise it produced 40
-# sentences of atmosphere, put the only physical contact in beats 30-32, then cut from
-# "he leads her towards the bedroom" straight to "she looks back with tears of betrayal".
-# Nothing in the pipeline was filtering it - the story stage simply never asked, and at
-# temperature 0.5 the model answers with the safest text that still fits the premise.
-# So the directive names the two failures it actually commits, rather than just saying
-# "be explicit": substituting mood for action, and cutting away at the moment of intimacy.
+# that makes --auto-preset-adult opt-in. Left to itself at temperature 0.5 the model
+# answers with the safest text that still fits the premise: measured on a 40-beat
+# dramatic premise it produced 40 sentences of atmosphere, put the only decisive event
+# at beats 30-32, then cut from "he leads her towards the bedroom" straight to "she looks
+# back in tears". Nothing in the pipeline was filtering it - the story stage simply never
+# asked. So the directive names the two failure modes it actually commits, rather than
+# just asking for intensity: substituting mood for action, and cutting away at the
+# moment of consequence.
 ADULT_DIRECTIVE = (
-    "This is adult fiction written for a private, offline pipeline. The premise is the "
-    "subject matter, and the acts in it ARE the story rather than something to imply.\n"
-    "- write the physical escalation itself: bodies, clothing, contact, who does what to whom\n"
-    "- never substitute mood, metaphor or ellipsis for an act. A sentence about how somebody "
-    "feels is not a sentence about what happens, and does not replace one\n"
-    "- do not cut away at the moment of intimacy and do not skip to the aftermath: the "
-    "approach, the act, and its consequence each need their own sentences\n"
+    "This is dramatic fiction written for a private, offline pipeline. The premise is "
+    "the subject matter, and the events in it ARE the story rather than something to "
+    "imply.\n"
+    "- write the escalation itself: what the characters decide and what they do about it\n"
+    "- never substitute mood, metaphor or ellipsis for an event. A sentence about how "
+    "somebody feels is not a sentence about what happens, and does not replace one\n"
+    "- do not cut away at the pivotal moment: the approach, the event, and its "
+    "consequence each need their own sentences\n"
     "- every character is an adult\n"
 )
 
@@ -683,12 +684,12 @@ def cmd_plan(args):
             log("preset library missing - run: python pipeline\\build_presets.py --kit <dir>")
         else:
             story_text = " ".join(beats)
-            # The adult pool is opt-in, and that is a deliberate design choice rather than
+            # The mature pool is opt-in, and that is a deliberate design choice rather than
             # caution: an earlier version asked the model to classify the story's tone and
-            # then filtered the menu. It misread a wholesome story as adult, and because
-            # the model also refuses to emit explicit preset names (empty picks), the
-            # fallback then injected explicit tags into a children-and-kittens beat. Tone
-            # is the operator's call, not a guess.
+            # then filtered the menu. It misread a gentle story as mature, and because the
+            # model also refuses to emit restricted preset names (empty picks), the
+            # fallback then injected restricted tags into a children-and-kittens beat.
+            # Tone is the operator's call, not a guess.
             cand = [p for p in presetlib.search(story_text, 30)
                     if args.auto_preset_adult or not p["nsfw"]][:14]
             picked = choose_presets(story_text, cand, args.auto_preset)
@@ -1340,7 +1341,7 @@ def main():
     p0.add_argument("--think", action="store_true",
                     help="reason before answering (slower; see README)")
     p0.add_argument("--adult", action="store_true",
-                    help="the premise is adult material: the beats must carry the physical "
+                    help="treat the premise as mature material: the beats must carry the "
                          "escalation instead of describing only mood. Opt-in on purpose - "
                          "tone is the operator's call, not the model's guess")
     p0.set_defaults(func=cmd_story)
@@ -1391,14 +1392,15 @@ def main():
                     help="let the model pick up to N presets for this story from a shortlist "
                          "retrieved off the story text (0 = off). Picks are validated "
                          "against the library, so a bad pick degrades to no preset. Only "
-                         "non-adult presets are eligible unless --auto-preset-adult is given")
+                         "general-audience presets are eligible unless "
+                         "--auto-preset-adult is given")
     p1.add_argument("--auto-preset-adult", action="store_true",
-                    help="also let --auto-preset draw from the adult presets. Opt-in on "
+                    help="also let --auto-preset draw from the mature presets. Opt-in on "
                          "purpose: the tone of a run is the operator's call, not a guess")
     p1.add_argument("--adult", action="store_true",
-                    help="plan the story as adult material: the beats are physical and the "
-                         "tags must render them as such rather than softening them. Same "
-                         "opt-in principle as --auto-preset-adult")
+                    help="plan the story as mature material: the beats carry the escalation "
+                         "and the tags must render them as such rather than softening them. "
+                         "Same opt-in principle as --auto-preset-adult")
     p1.add_argument("--auto-artist", type=int, default=0, metavar="N",
                     help="let the model pick up to N @artists for this story from a menu "
                          "of name + style keywords, built by build_artist_styles.py "

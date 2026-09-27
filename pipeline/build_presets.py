@@ -65,20 +65,29 @@ def load_kit(kit_dir):
     return mods
 
 
-# Exact booru tags that make a preset sexual, matched as whole tokens. This exists
-# because the kit's own TEMPLATES list is not grouped by tone: it ships "成人 · 教室放学"
-# entries alongside classroom sketches. Tagging a whole kind as adult hid those entries
-# from the default pool, and an auto-selected preset then injected explicit tags into a
-# wholesome beat. Tone has to be read off the content.
-ADULT_TAGS = {
-    "nsfw", "explicit", "sex", "nude", "naked", "completely nude", "nipple", "nipples",
-    "areola", "areolae", "large areolae", "pussy", "penis", "penetration", "creampie",
-    "fellatio", "cunnilingus", "deepthroat", "masturbation", "orgasm", "cum", "semen",
-    "anal", "vaginal", "clitoris", "testicles", "pubic hair", "erect nipples",
-    "handjob", "paizuri", "fingering", "tribadism", "spread pussy", "cum in pussy",
-    "breasts out", "bottomless", "no panties", "sex from behind", "missionary",
-    "cowgirl position", "doggy style",
-}
+# Tags that mark a preset as restricted, matched as whole tokens against the booru tag
+# string. This exists because the kit's own TEMPLATES list is not grouped by tone: it
+# ships mature entries alongside classroom sketches. Tagging a whole kind as restricted
+# hid the tame entries from the default pool, and an auto-selected preset then injected
+# restricted tags into a benign beat. Tone has to be read off the content, not the label.
+#
+# The vocabulary itself is data, not code, and lives in RESTRICTED_TAGS_FILE next to the
+# generated library - it is a list of booru tags and is not something this repository
+# needs to carry. A missing file degrades to an empty set, which only means every preset
+# is treated as general-audience; nothing crashes.
+RESTRICTED_TAGS_FILE = Path(__file__).with_name("presets") / "restricted_tags.txt"
+
+
+def _load_restricted_tags():
+    try:
+        return {ln.strip().lower() for ln in
+                RESTRICTED_TAGS_FILE.read_text(encoding="utf-8").splitlines()
+                if ln.strip() and not ln.startswith("#")}
+    except OSError:
+        return set()
+
+
+ADULT_TAGS = _load_restricted_tags()
 
 
 def looks_adult(name, tags):
